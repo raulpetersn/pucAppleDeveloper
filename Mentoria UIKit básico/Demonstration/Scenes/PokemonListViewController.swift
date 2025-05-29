@@ -1,13 +1,19 @@
 import UIKit
 
 class PokemonListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+
+    var pokemonList: [Pokemon] = []
+    let url = "https://pokeapi.co/api/v2/pokemon?limit=150&offset=0"
+    let urlDetails: String = "https://pokeapi.co/api/v2/pokemon/venusaur"
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(PokemonTableViewCell.self, forCellReuseIdentifier: "CustomCell")
+        tableView.separatorStyle = .none
+        tableView.rowHeight = 150
+        tableView.register(PokemonTableViewCell.self, forCellReuseIdentifier: PokemonTableViewCell.identifier)
         return tableView
     }()
     
@@ -16,7 +22,7 @@ class PokemonListViewController: UIViewController, UITableViewDataSource, UITabl
         view.backgroundColor = .green
         
         view.addSubview(tableView)
-        
+        fecthPokemonList()
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -25,18 +31,61 @@ class PokemonListViewController: UIViewController, UITableViewDataSource, UITabl
         ])
     }
     
+    private func fecthPokemonList() {
+        guard let fakeUlr = URL(string: url) else { return }
+        
+        URLSession.shared.dataTask(with: fakeUlr) { data, _, error in
+            guard let data, error == nil else { return }
+        
+            do {
+                let decode = try JSONDecoder().decode(PokemonListResponse.self, from: data)
+                let decodedList = decode.results.enumerated().map { index, pokemon in
+                    pokemon.toDomainModel(indexPokemon: index + 1)
+                }
+                
+                DispatchQueue.main.async {
+                    self.pokemonList = decodedList
+                    self.tableView.reloadData()
+                }
+            } catch {
+                print("Error no request \(error)")
+            }
+            
+        }.resume()
+    }
+    
+    private func fecthPokemonDetails() {
+     
+        guard let url = URL(string: urlDetails) else { return }
+        
+        URLSession.shared.dataTask(with: url) { data, _, error in
+            do {
+//                print("Caiu no do \()")
+            } catch {
+                print("Erro no detalhes do pokemon \(error)")
+            }
+            
+        }.resume()
+        
+    }
+    
     // MARK: - UITableViewDataSource
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return pokemonList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as? PokemonTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: PokemonTableViewCell.identifier, for: indexPath) as? PokemonTableViewCell else {
             return UITableViewCell()
         }
-        cell.configure(with: Pokemon.mock())
+
+        cell.configure(with: pokemonList[indexPath.row])
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        return print("clickou na row \(indexPath.row)")
     }
 }
 

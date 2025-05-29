@@ -2,7 +2,7 @@ import UIKit
 
 class CellViewController: UIViewController {
     
-    private let customCell = PokemonTableViewCell(style: .default, reuseIdentifier: "CustomCell")
+    private let customCell = PokemonTableViewCell(style: .default, reuseIdentifier: PokemonTableViewCell.identifier)
     
     override func viewDidLoad() {
         super.viewDidLoad()

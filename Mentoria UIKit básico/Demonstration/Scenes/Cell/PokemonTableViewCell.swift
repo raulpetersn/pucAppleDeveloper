@@ -1,6 +1,8 @@
 import UIKit
 
 class PokemonTableViewCell: UITableViewCell {
+    
+    static let identifier = "PokemonTableViewCell"
 
     private let customView: PokemonCellView = {
         let view = PokemonCellView()
