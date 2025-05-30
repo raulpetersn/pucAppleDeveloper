@@ -19,7 +19,7 @@ class LobbyViewController: UIViewController {
     private lazy var detailButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Detalhe do pokemon", for: .normal)
-        button.addTarget(self, action: #selector(goToPokemonDetail), for: .touchUpInside)
+//        button.addTarget(self, action: #selector(goToPokemonDetail), for: .touchUpInside)
         return button
     }()
 
@@ -50,9 +50,9 @@ class LobbyViewController: UIViewController {
         navigationController?.pushViewController(PokemonListViewController(), animated: true)
     }
 
-    @objc func goToPokemonDetail() {
-        navigationController?.pushViewController(PokemonDetailViewController(), animated: true)
-    }
+//    @objc func goToPokemonDetail() {
+//        navigationController?.pushViewController(PokemonDetailViewController(), animated: true)
+//    }
 }
 
 

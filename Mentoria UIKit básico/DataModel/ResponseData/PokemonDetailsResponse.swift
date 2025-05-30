@@ -7,14 +7,28 @@
 
 struct PokemonDetailsResponse: Decodable {
     
-    let idPokemon: Int
-    let weight: Int
-    let height: Int
-    
-    enum CodingKey: String, Codable {
-    case idPokemon = "id"
-    case weight = "weight"
-    case height = "height"
+    let id: Int
+    let weight: Double
+    let height: Double
+    let name: String
+    let types: [PokemonTypeEntry]
+    let sprites: PokemonSprites
+}
+
+struct PokemonTypeEntry: Decodable {
+    let slot: Double
+    let type: PokemonTypeWithSprites
+}
+
+struct PokemonTypeWithSprites: Codable {
+    let name: String
+    let url: String
+}
+
+struct PokemonSprites: Decodable {
+    let frontDefault: String
+
+    enum CodingKeys: String, CodingKey {
+        case frontDefault = "front_default"
     }
-    
 }

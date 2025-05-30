@@ -16,14 +16,6 @@ class PokemonDetailView: UIView {
         return label
     }()
     
-    
-//    id: 54,
-//    name: "Psyduck",
-//    height: 0.8,
-//    weight: 19.6,
-//    types: [.water],
-//    imageUrl: "psyduck"
-    
     lazy var heightLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -89,7 +81,6 @@ class PokemonDetailView: UIView {
     }
 
     private func setupLayout() {
-//        self.backgroundColor = Colors.gray600
         addSubview(nameLabel)
         addSubview(stackView)
         addSubview(contentView)
@@ -98,7 +89,6 @@ class PokemonDetailView: UIView {
         contentView.addSubview(stackView)
         
         NSLayoutConstraint.activate([
-            
             nameLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             nameLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
 
@@ -120,16 +110,16 @@ class PokemonDetailView: UIView {
     }
     
     func configure(with pokemonDetail: PokemonDetail) {
-        let typesText = pokemonDetail.types.map { $0.getTitle() }.joined(separator: ", ")
-        guard let pokemonColor = pokemonDetail.types.first?.getColor() else { return }
-        nameLabel.text = pokemonDetail.name
+//        let typesText = pokemonDetail.types.map { $0.getTitle() }.joined(separator: ", ")
+//        guard let pokemonColor = pokemonDetail.types.first?.getColor() else { return }
+        nameLabel.text = pokemonDetail.name.capitalized
         idLabel.text = "ID: \(pokemonDetail.id)"
         heightLabel.text = "Altura: \(pokemonDetail.height)"
         weightLabel.text = "Peso: \(pokemonDetail.weight)"
-        typeLabel.text = "Tipo: \(typesText)"
-        pokemonImage.image = UIImage(named: pokemonDetail.imageUrl)
+//        typeLabel.text = "Tipo: \(typesText)"
+        pokemonImage.load(urlString: pokemonDetail.imageUrl)
         
-        setupBackgroundColor(color: pokemonColor)
+        setupBackgroundColor(color: pokemonDetail.types.getColor())
     }
     
     func setupBackgroundColor(color: UIColor){

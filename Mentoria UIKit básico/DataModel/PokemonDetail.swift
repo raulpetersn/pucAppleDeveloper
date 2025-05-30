@@ -3,7 +3,7 @@ struct PokemonDetail {
     let name: String
     let height: Double
     let weight: Double
-    let types: [PokemonType]
+    let types: PokemonType
     let imageUrl: String
 }
 
@@ -14,7 +14,7 @@ extension PokemonDetail {
             name: "Psyduck",
             height: 0.8,
             weight: 19.6,
-            types: [.water],
+            types: PokemonType.water,
             imageUrl: "psyduck"
         )
     }

@@ -3,8 +3,9 @@ import UIKit
 class PokemonListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     var pokemonList: [Pokemon] = []
+    var pokemonDetail: PokemonDetail? = nil
     let url = "https://pokeapi.co/api/v2/pokemon?limit=150&offset=0"
-    let urlDetails: String = "https://pokeapi.co/api/v2/pokemon/venusaur"
+    
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -54,19 +55,9 @@ class PokemonListViewController: UIViewController, UITableViewDataSource, UITabl
         }.resume()
     }
     
-    private func fecthPokemonDetails() {
-     
-        guard let url = URL(string: urlDetails) else { return }
-        
-        URLSession.shared.dataTask(with: url) { data, _, error in
-            do {
-//                print("Caiu no do \()")
-            } catch {
-                print("Erro no detalhes do pokemon \(error)")
-            }
-            
-        }.resume()
-        
+    @objc
+    func goToPokemonDetails(pokemonName: String) {
+        navigationController?.pushViewController(PokemonDetailViewController(pokemonName: pokemonName), animated: true)
     }
     
     // MARK: - UITableViewDataSource
@@ -85,7 +76,8 @@ class PokemonListViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        return print("clickou na row \(indexPath.row)")
+        let selectedPokemon = pokemonList[indexPath.row].name
+        return goToPokemonDetails(pokemonName: selectedPokemon)
     }
 }
 
